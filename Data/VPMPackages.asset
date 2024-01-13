@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: VPMPackages
   m_EditorClassIdentifier: 
   url: https://853.moe/vpm-repos/vpm.json
-  installVPMPackages: 1
+  installVPMPackages: 0
   installPackages: []
   installZipPackages: 1
   forceInstallZipPackages: 0
