@@ -20,6 +20,7 @@ namespace Sonic853.PackageInstaller
         static readonly string cachePath = Path.Combine("Temp", "com.sonic853.packageinstaller");
         static readonly string cacheOldPackagePath = Path.Combine(cachePath, "oldPackage");
         static readonly string cacheUnpackagePath = Path.Combine(cachePath, "Package");
+        static readonly string vpmManifest = Path.Combine("Packages", "vpm-manifest.json");
         static void Init()
         {
             // 读取编辑器语言
@@ -298,6 +299,7 @@ namespace Sonic853.PackageInstaller
             var oldPackagePath = Path.Combine(cacheOldPackagePath, filenameWithoutExtension);
             var unpackagePath = Path.Combine(cacheUnpackagePath, filenameWithoutExtension);
             var localPackagePath = Path.Combine("Packages", filenameWithoutExtension);
+            var version = "";
             if (!Directory.Exists(cacheUnpackagePath))
                 Directory.CreateDirectory(cacheUnpackagePath);
             var retryMax = 20;
@@ -328,13 +330,13 @@ namespace Sonic853.PackageInstaller
             retryCount = 0;
             isDone = false;
             ZipUtility.UncompressFromZip(_cachePackageFile, string.Empty, unpackagePath);
-            if (checkVersion)
+            var packageJsonFile = Path.Combine(unpackagePath, "package.json");
+            if (File.Exists(packageJsonFile))
             {
-                var packageJsonFile = Path.Combine(unpackagePath, "package.json");
-                if (File.Exists(packageJsonFile))
+                var packageJson = JObject.Parse(File.ReadAllText(packageJsonFile));
+                version = packageJson["version"].ToString();
+                if (checkVersion)
                 {
-                    var packageJson = JObject.Parse(File.ReadAllText(packageJsonFile));
-                    var version = packageJson["version"].ToString();
                     var localPackageJsonFile = Path.Combine(localPackagePath, "package.json");
                     if (File.Exists(localPackageJsonFile))
                     {
@@ -411,6 +413,14 @@ namespace Sonic853.PackageInstaller
                 Directory.Delete(cacheOldPackagePath, true);
             // if (Directory.Exists(cacheUnpackagePath))
             //     Directory.Delete(cacheUnpackagePath, true);
+            JObject vpmManifestObject = JObject.Parse(File.ReadAllText(vpmManifest));
+            if (vpmManifestObject["dependencies"] != null)
+            {
+                if (vpmManifestObject["dependencies"][filenameWithoutExtension] == null)
+                    vpmManifestObject["dependencies"][filenameWithoutExtension] = new JObject();
+                vpmManifestObject["dependencies"][filenameWithoutExtension]["version"] = version;
+                File.WriteAllText(vpmManifest, vpmManifestObject.ToString());
+            }
             return true;
         }
         /// <summary>
