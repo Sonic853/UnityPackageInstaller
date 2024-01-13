@@ -413,13 +413,16 @@ namespace Sonic853.PackageInstaller
                 Directory.Delete(cacheOldPackagePath, true);
             // if (Directory.Exists(cacheUnpackagePath))
             //     Directory.Delete(cacheUnpackagePath, true);
-            JObject vpmManifestObject = JObject.Parse(File.ReadAllText(vpmManifest));
-            if (vpmManifestObject["dependencies"] != null)
+            if (File.Exists(vpmManifest))
             {
-                if (vpmManifestObject["dependencies"][filenameWithoutExtension] == null)
-                    vpmManifestObject["dependencies"][filenameWithoutExtension] = new JObject();
-                vpmManifestObject["dependencies"][filenameWithoutExtension]["version"] = version;
-                File.WriteAllText(vpmManifest, vpmManifestObject.ToString());
+                JObject vpmManifestObject = JObject.Parse(File.ReadAllText(vpmManifest));
+                if (vpmManifestObject["dependencies"] != null)
+                {
+                    if (vpmManifestObject["dependencies"][filenameWithoutExtension] == null)
+                        vpmManifestObject["dependencies"][filenameWithoutExtension] = new JObject();
+                    vpmManifestObject["dependencies"][filenameWithoutExtension]["version"] = version;
+                    File.WriteAllText(vpmManifest, vpmManifestObject.ToString());
+                }
             }
             return true;
         }
