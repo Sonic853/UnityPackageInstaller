@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4055d9cb1085d3042917b7828d022084, type: 3}
+  m_Name: VPMPackages
+  m_EditorClassIdentifier: 
+  url: https://853.moe/vpm-repos/vpm.json
+  installVPMPackages: 1
+  installPackages: []
+  installZipPackages: 1
+  forceInstallZipPackages: 0
+  deleteSelf: 1
+  deleteFolders:
+  - Assets\Sonic853\Editor\PackageInstaller
+  - Assets\Sonic853\Editor\PackageManagerChecker
