@@ -45,7 +45,7 @@ namespace Sonic853.PackageInstaller
             }
             InstallPackages(true);
         }
-        [MenuItem("853Lab/Package/InstallPackages", false, 101)]
+        [MenuItem("Window/853Lab/Package/InstallPackages", false, 101)]
         static void InstallPackages()
         {
             InstallPackages(false);
